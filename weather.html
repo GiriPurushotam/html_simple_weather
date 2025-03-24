@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Weather</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const apiKey = "071b7ec6ddd1b7c6169502a2ba2e6e78";
+            const city = "Tikathali";
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+            fetch(apiUrl) .then(Response => Response.json()) .then(data => {
+                document.getElementById("city").innerText = data.name;
+                document.getElementById("date").innerText = new Date().toLocaleDateString();
+                document.getElementById("main-weather").innerText = data.weather[0].main;
+                document.getElementById("weather-desc").innerText = data.weather[0].description;
+                document.getElementById("weather-icon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                document.getElementById("temp").innerText = (data.main.temp - 273.15).toFixed(0)  + "°C";
+                document.getElementById("pressure").innerText = data.main.pressure + "hPa";
+                document.getElementById("humidity").innerText = data.main.humidity + "%";
+                document.getElementById("wind-speed").innerText = data.wind.speed + "m/s";
+                document.getElementById("wind-direction").innerText = data.wind.deg + "°";
+            })
+
+            .catch(error => console.error("Error fetching weather data", error));
+            
+        });
+    </script>
+    <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+    table { margin: auto; border-collapse: collapse; width: 50%; }
+    td, th { border: 1px solid black; padding: 10px; }
+    img { width: 50px; height: 50px; }
+</style>
+</head>
+<body>
+    
+    <h1>Live Weather Report</h1>
+    <h2 id="city">Loading...</h2>
+    <p id="date"></p>
+    <table>
+        <tr><th>Main Weather</th><td id="main-weather"></td></tr>
+        <tr><th>Weather description</th><p><td id="weather-desc"></td></p></tr>
+        <tr><th>Weathr Icon</th><td><img src="" alt="Weather Icon" id="weather-icon"></td></tr>
+        <tr><th>Temperature</th><td id="temp"></td></tr>
+        <tr><th>Pressure</th><td id="pressure"></td></tr>
+        <tr><th>Humidity</th><td id="humidity"></td></tr>
+        <tr><th>Wind Speed</th><td id="wind-speed"></td></tr>
+        <tr><th>Wind Direction</th><td id="wind-direction"></td></tr>
+    </table>
+</body>
+</html>
